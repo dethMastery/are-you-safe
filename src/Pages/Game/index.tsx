@@ -59,7 +59,19 @@ export const GamePage = () => {
     <div className="w-full h-screen">
       <div className="w-full h-full flex flex-col gap-6 justify-center items-center">
         {[...Array(live)].map((_e, i) => {
-          return <div key={i} className="w-full h-[2rem] bg-amber-100"></div>;
+          return (
+            <div
+              key={i}
+              id={`life-${i}`}
+              className={`w-full h-[2rem] ${
+                i == 0
+                  ? "bg-amber-200"
+                  : i == 1
+                  ? "bg-amber-300"
+                  : "bg-amber-500"
+              }`}
+            ></div>
+          );
         })}
       </div>
       <button
