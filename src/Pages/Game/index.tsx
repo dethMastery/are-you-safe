@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const GamePage = () => {
   const [searchParam, _setSearchParam] = useSearchParams();
+  const navigate = useNavigate();
 
   const [live, setLive] = useState<number>(3);
   const [deadLine, setDeadLine] = useState<number>(
@@ -30,9 +31,12 @@ export const GamePage = () => {
         }
       }, 200);
     } else {
-      resetDead();
-      setCount(0);
-      setTurnChange(false);
+      setTimeout(() => {
+        resetDead();
+        setCount(0);
+        setAnimation(false);
+        setTurnChange(false);
+      }, 200);
     }
   }, [count, isTurnChange]);
 
@@ -52,6 +56,7 @@ export const GamePage = () => {
   };
 
   const turnChange = () => {
+    setAnimation(true);
     setTurnChange(true);
   };
 
@@ -76,7 +81,13 @@ export const GamePage = () => {
       </div>
       <button
         className={`w-full h-full absolute top-0 left-0 z-10 ${
-          runAnimation ? (isHit ? "bg-red-700" : "bg-living-coral") : ""
+          runAnimation
+            ? isHit
+              ? "bg-red-700"
+              : isTurnChange
+              ? "bg-[#68D74F]"
+              : "bg-living-coral"
+            : ""
         }`}
         onClick={() => updateCount()}
       ></button>
@@ -95,7 +106,10 @@ export const GamePage = () => {
       >
         <h1 className="text-5xl">Game Over</h1>
 
-        <button className="px-2 py-4 bg-[#0d6efd] text-whitesmoke rounded hover:opacity-60">
+        <button
+          className="px-2 py-4 bg-[#0d6efd] text-whitesmoke rounded hover:opacity-60"
+          onClick={() => navigate(0)}
+        >
           Restart?
         </button>
         <a
